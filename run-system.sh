@@ -13,3 +13,18 @@ docker run -d --name chinook-db \
     postgres
 
 docker build --target seeder --label project=chinook -t chinook-seeder .
+
+#Wait for Postgres to accept connections before seeding
+until docker exec chinook-db pg_isready -U robyn -d chinook; do
+    echo "Waiting for database..."
+    sleep 2
+done
+
+
+MSYS_NO_PATHCONV=1 docker run --rm --name chinook-seeder \
+    --network chinook-net \
+    --label project=chinook \
+    -v "$PWD/Chinook.db:/app/Chinook.db:ro" \
+    -e SQLITE_FILE=/app/Chinook.db \
+    -e DATABASE_URL=postgres://robyn:password@chinook-db:5432/chinook \
+    chinook-seeder
