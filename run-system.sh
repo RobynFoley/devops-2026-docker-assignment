@@ -11,3 +11,5 @@ docker run -d --name chinook-db \
     -e POSTGRES_PASSWORD=password \
     -e POSTGRES_DB=chinook \
     postgres
+
+docker build --target seeder --label project=chinook -t chinook-seeder .
