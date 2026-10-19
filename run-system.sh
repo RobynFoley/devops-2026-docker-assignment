@@ -43,3 +43,5 @@ MSYS_NO_PATHCONV=1 docker run -d --name chinook-gateway \
     --servers=cockroachdb \
     --tools=execute_query \
     --config=/mcp_config.yaml
+
+docker build --target agent --label project=chinook -t chinook-agent .
