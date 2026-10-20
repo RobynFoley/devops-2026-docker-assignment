@@ -51,3 +51,13 @@ until docker logs chinook-gateway 2>&1 | grep -q "Start sse server"; do
     sleep 2
 done
 
+MSYS_NO_PATHCONV=1 docker run --rm --name chinook-agent \
+    --network chinook-net \
+    --label project=chinook \
+    -v "$PWD/secret.ollama-api-key:/run/secrets/openai-api-key:ro" \
+    -e MCP_SERVER_URL=http://chinook-gateway:8811/sse \
+    -e DATABASE_DIALECT=PostgreSQL \
+    -e QUESTION="What are the top 3 albums by sales?" \
+    -e OPENAI_API_BASE_URL=https://ollama.com/v1 \
+    -e OPENAI_MODEL_NAME=gpt-oss:20b \
+    chinook-agent
