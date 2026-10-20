@@ -1,11 +1,10 @@
 #!/bin/sh
 
 docker ps -aq --filter label=project=chinook | xargs -r docker rm -f -v
+docker ps -aq --filter label=docker-mcp=true | xargs -r docker rm -f -v
 
-docker rmi chinook-seeder
+docker network ls -q --filter label=project=chinook | xargs -r docker network rm
 
-docker rm -f chinook-gateway
+docker image ls -q --filter label=project=chinook | xargs -r docker rmi -f
 
-docker rmi chinook-agent
-
-docker network rm chinook-net
+docker volume ls -q --filter label=project=chinook | xargs -r docker volume rm
