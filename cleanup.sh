@@ -1,6 +1,6 @@
 #!/bin/sh
 
-docker rm -f chinook-db
+docker ps -aq --filter label=project=chinook | xargs -r docker rm -f -v
 
 docker rmi chinook-seeder
 
