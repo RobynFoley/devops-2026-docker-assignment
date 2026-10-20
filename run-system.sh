@@ -45,3 +45,9 @@ MSYS_NO_PATHCONV=1 docker run -d --name chinook-gateway \
     --config=/mcp_config.yaml
 
 docker build --target agent --label project=chinook -t chinook-agent .
+
+until docker logs chinook-gateway 2>&1 | grep -q "Start sse server"; do
+    echo "Waiting for gateway..."
+    sleep 2
+done
+
