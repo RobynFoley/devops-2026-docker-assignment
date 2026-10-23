@@ -2,6 +2,8 @@
 
 set -e
 
+QUESTION="${1:-What are the top 3 albums by sales?}"
+
 docker network create --label project=chinook chinook-net
 
 docker run -d --name chinook-db \
@@ -57,7 +59,7 @@ MSYS_NO_PATHCONV=1 docker run --rm --name chinook-agent \
     -v "$PWD/secret.ollama-api-key:/run/secrets/openai-api-key:ro" \
     -e MCP_SERVER_URL=http://chinook-gateway:8811/sse \
     -e DATABASE_DIALECT=PostgreSQL \
-    -e QUESTION="What are the top 3 albums by sales?" \
+    -e QUESTION="$QUESTION"\
     -e OPENAI_API_BASE_URL=https://ollama.com/v1 \
     -e OPENAI_MODEL_NAME=gpt-oss:20b \
     chinook-agent
